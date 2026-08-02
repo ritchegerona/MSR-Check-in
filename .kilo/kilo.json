@@ -1,0 +1,21 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  "lsp": {
+    "html": {
+      "command": [
+        "node",
+        "/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/html-language-features/server/dist/node/htmlServerMain.js",
+        "--stdio"
+      ],
+      "extensions": ["html"]
+    },
+    "css": {
+      "command": [
+        "node",
+        "/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/css-language-features/server/dist/node/cssServerMain.js",
+        "--stdio"
+      ],
+      "extensions": ["css"]
+    }
+  }
+}

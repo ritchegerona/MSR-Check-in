@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Admin Dashboard - Visitors Login System">
+  <title>Admin Dashboard · MSR Check-in</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-page">
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <!-- ─── Auth Overlay ─────────────────────── -->
+  <div id="authOverlay" class="auth-overlay" style="display: none;">
+    <div class="auth-card">
+      <div class="lock-icon" aria-hidden="true">🔐</div>
+      <h2>Admin Access</h2>
+      <p>Enter your PIN to access the dashboard</p>
+      <input
+        type="password"
+        id="pinInput"
+        class="form-input"
+        placeholder="PIN"
+        maxlength="4"
+        inputmode="numeric"
+        autofocus
+        aria-describedby="authError"
+      >
+      <div class="auth-error" id="authError" role="alert">
+        ❌ Incorrect PIN. Try again.
+      </div>
+      <button id="authBtn" class="btn-submit" style="margin-top: 16px;">
+        <span class="btn-text">Unlock Dashboard</span>
+      </button>
+      <div style="margin-top: 12px; font-size: 12px; color: var(--text-muted);">
+        Default PIN: <strong>1234</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Navigation Bar ──────────────────── -->
+  <nav class="admin-nav" aria-label="Admin Navigation">
+    <div class="admin-nav-inner">
+      <a href="index.html" class="admin-nav-brand">
+        <span class="brand-icon" aria-hidden="true">
+          <img src="images/MSR_logo.png" alt="Company" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
+        </span>
+        Admin Panel
+      </a>
+      <div class="admin-nav-actions">
+        <button id="backBtn" class="btn-back">
+          ← Back
+        </button>
+        <button id="logoutBtn" class="btn-logout">
+          🔒 Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── Main Content ────────────────────── -->
+  <main id="adminMain" class="admin-main" style="display: none;">
+
+    <!-- Stats Cards -->
+    <section class="stats-grid" aria-label="Dashboard Statistics">
+      <div class="stat-card">
+        <span class="stat-icon" aria-hidden="true">📅</span>
+        <div class="stat-card-label">Total Today</div>
+        <div class="stat-card-value" id="totalToday">0</div>
+        <div class="stat-card-sub">visitors checked in today</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon" aria-hidden="true">📍</span>
+        <div class="stat-card-label">Currently On-Site</div>
+        <div class="stat-card-value" id="onSite">0</div>
+        <div class="stat-card-sub">visitors in the building</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon" aria-hidden="true">⏱️</span>
+        <div class="stat-card-label">Recent Entry</div>
+        <div class="stat-card-value" id="recentEntry" style="font-size: 20px; letter-spacing: 0;">—</div>
+        <div class="stat-card-sub">most recent check-in</div>
+      </div>
+    </section>
+
+    <!-- View Toggle -->
+    <div class="view-toggle" role="tablist">
+      <button class="filter-tab active" data-view="visitors" role="tab" aria-selected="true">Visitors</button>
+      <button class="filter-tab" data-view="employees" role="tab" aria-selected="false">Employees</button>
+    </div>
+
+    <!-- Search & Filters (only for visitors view) -->
+    <div id="searchFilterSection" class="search-wrapper-section">
+      <div class="search-wrapper">
+        <span class="search-icon" aria-hidden="true">🔍</span>
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Search by name, contact, person, or purpose..."
+          aria-label="Search visitors"
+        >
+      </div>
+
+      <div class="filter-tabs" role="tablist" aria-label="Filter visitors">
+        <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">All</button>
+        <button class="filter-tab" data-filter="checked-in" role="tab" aria-selected="false">On-Site</button>
+        <button class="filter-tab" data-filter="checked-out" role="tab" aria-selected="false">Checked Out</button>
+      </div>
+    </div>
+
+    <!-- Visitors Section -->
+    <section id="visitorsSection">
+      <div class="section-title">
+        📋 Visitor Log
+      </div>
+
+      <div class="table-card">
+        <div class="table-scroll">
+          <table class="visitors-table" id="visitorsTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Contact</th>
+                <th>Contact Person</th>
+                <th>Purpose</th>
+                <th>Status</th>
+                <th>Time</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Rows rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+          <div class="empty-state-icon" aria-hidden="true">📭</div>
+          <h3>No visitors found</h3>
+          <p>Visitors who check in will appear here.</p>
+        </div>
+      </div>
+
+      <!-- ─── Manual Override Section ────────── -->
+      <section class="override-section">
+        <div class="override-header" role="button" tabindex="0" aria-expanded="false">
+          <h3>
+            <span aria-hidden="true">✏️</span>
+            Manual Override — Add Visitor
+          </h3>
+          <span class="override-toggle" aria-hidden="true">▼</span>
+        </div>
+        <div class="override-body">
+          <form id="overrideForm" class="override-form">
+            <div class="form-group form-group--full">
+              <label class="form-label" for="overrideName">Full Name</label>
+              <input
+                type="text"
+                id="overrideName"
+                class="form-input"
+                placeholder="Enter visitor name"
+                required
+              >
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="overrideContact">Contact Number</label>
+              <input
+                type="tel"
+                id="overrideContact"
+                class="form-input"
+                placeholder="09XX XXX XXXX"
+                required
+              >
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="overridePerson">Contact Person</label>
+              <div class="select-wrapper">
+                <select id="overridePerson" class="form-select" required>
+                  <option value="">Select person by department...</option>
+                  <optgroup label="HR DEPARTMENT">
+                    <option value="Russell Caballero">Russell Caballero</option>
+                    <option value="Maria Anna Pili">Maria Anna Pili</option>
+                  </optgroup>
+                  <optgroup label="ACCOUNTING DEPARTMENT">
+                    <option value="Wilma">Wilma</option>
+                    <option value="Angie">Angie</option>
+                    <option value="Ella">Ella</option>
+                  </optgroup>
+                  <optgroup label="GCC DEPARTMENT">
+                    <option value="Miah">Miah</option>
+                    <option value="Tin">Tin</option>
+                    <option value="Cathy">Cathy</option>
+                    <option value="Jane">Jane</option>
+                    <option value="Ron">Ron</option>
+                    <option value="Marlou">Marlou</option>
+                    <option value="Paul">Paul</option>
+                    <option value="Marie">Marie</option>
+                    <option value="Sofia">Sofia</option>
+                    <option value="Yong">Yong</option>
+                    <option value="Ladin">Ladin</option>
+                    <option value="Majeed">Majeed</option>
+                  </optgroup>
+                  <optgroup label="DEPLOYMENT DEPARTMENT">
+                    <option value="Madz">Madz</option>
+                    <option value="Chie">Chie</option>
+                    <option value="Zsa">Zsa</option>
+                    <option value="Neil">Neil</option>
+                    <option value="Ivy">Ivy</option>
+                    <option value="Patrick">Patrick</option>
+                    <option value="Jen">Jen</option>
+                    <option value="Ren">Ren</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="overridePurpose">Purpose</label>
+              <div class="select-wrapper">
+                <select id="overridePurpose" class="form-select" required>
+                  <option value="">Select purpose...</option>
+                  <option value="Meeting">Meeting</option>
+                  <option value="Delivery">Delivery</option>
+                  <option value="Interview">Interview</option>
+                  <option value="Maintenance">Maintenance</option>
+                  <option value="Personal Visit">Personal Visit</option>
+                  <option value="Job Application">Job Application</option>
+                  <option value="Client Visit">Client Visit</option>
+                  <option value="Final Briefing">Final Briefing</option>
+                  <option value="Submission of Documents">Submission of Documents</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn-submit" style="margin-top: 8px;">
+              <span class="btn-text">➕ Add Visitor Manually</span>
+            </button>
+          </form>
+        </div>
+      </section>
+    </section>
+
+    <!-- Employees Section -->
+    <section id="employeesSection" style="display: none;">
+      <div class="section-title">
+        👥 Employee Log
+      </div>
+
+      <div class="table-card">
+        <div class="table-scroll">
+          <table class="visitors-table" id="employeesTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Time</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Rows rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyStateEmployees" class="empty-state" style="display: none;">
+          <div class="empty-state-icon" aria-hidden="true">📭</div>
+          <h3>No employees found</h3>
+          <p>Employees who check in will appear here.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/admin.js"></script>
+
+</body>
+</html>
