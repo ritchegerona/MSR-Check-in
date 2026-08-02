@@ -25,26 +25,22 @@
     <div class="auth-card">
       <div class="lock-icon" aria-hidden="true">🔐</div>
       <h2>Admin Access</h2>
-      <p>Enter your PIN to access the dashboard</p>
+      <p>Enter your password to access the dashboard</p>
       <input
         type="password"
         id="pinInput"
         class="form-input"
-        placeholder="PIN"
-        maxlength="4"
-        inputmode="numeric"
+        placeholder="Password"
         autofocus
         aria-describedby="authError"
       >
       <div class="auth-error" id="authError" role="alert">
-        ❌ Incorrect PIN. Try again.
+        ❌ Incorrect password. Try again.
       </div>
       <button id="authBtn" class="btn-submit" style="margin-top: 16px;">
         <span class="btn-text">Unlock Dashboard</span>
       </button>
       <div style="margin-top: 12px; font-size: 12px; color: var(--text-muted);">
-        Default PIN: <strong>1234</strong>
-      </div>
     </div>
   </div>
 
