@@ -71,9 +71,24 @@
 </form>
 </div>
 </div>
-
-  <!-- Main Container (hidden until choice) -->
-  <div id="mainContainer" class="container hidden">
+</div>
+<!-- Employee Success Modal -->
+<div id="employeeSuccessModal" class="modal hidden">
+  <div class="modal-content">
+    <h3 style="margin-bottom: 16px; color: var(--text-primary);">Success</h3>
+    <p id="employeeSuccessMessage" style="margin-bottom: 24px; color: var(--text-secondary); font-size: 15px;"></p>
+    <div id="employeeSuccessBtnContainer" class="hidden" style="display: flex; flex-direction: column; gap: 12px;">
+      <button id="employeeBackBtn" class="btn-submit" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+        <span class="btn-text">Back to Dashboard</span>
+      </button>
+      <button id="employeeCloseBtn" class="btn-submit" style="background: #6c757d;">
+        <span class="btn-text">Close</span>
+      </button>
+    </div>
+  </div>
+</div>
+<!-- Main Container (hidden until choice) -->
+<div id="mainContainer" class="container hidden">
 
     <!-- Check-in Card -->
     <div class="card">
