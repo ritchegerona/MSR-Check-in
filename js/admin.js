@@ -10,7 +10,7 @@
   const API_URL = 'https://script.google.com/macros/s/AKfycbxs9sE5s0jaNhpvMxChC-i79h9h3NuUBQo_NQSqdQwPpgWpgpMc_Pw5BBxFT5ZTCtSvzQ/exec';
 
   // ─── Admin PIN (simple auth) ────────────
-  const ADMIN_PIN = '12345';
+  const ADMIN_PASSWORD = 'MSRAdmin2026';
   const AUTH_KEY = 'admin_authenticated';
 
   // ─── DOM References ────────────────────
@@ -61,7 +61,7 @@
   // ─── Authentication ─────────────────────
   function handleAuth() {
     const pin = pinInput.value.trim();
-    if (pin === ADMIN_PIN) {
+    if (pin === ADMIN_PASSWORD) {
       sessionStorage.setItem(AUTH_KEY, 'true');
       authOverlay.style.display = 'none';
       adminMain.style.display = 'block';
