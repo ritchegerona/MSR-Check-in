@@ -6,6 +6,7 @@
 /* ─── Admin Layout ──────────────────────── */
 body.admin-page {
   justify-content: flex-start;
+  align-items: stretch;
   padding: 0;
   min-height: 100vh;
 }
@@ -507,15 +508,16 @@ body.admin-page {
 
 .auth-card .form-input {
   text-align: center;
-  font-size: 24px;
-  letter-spacing: 8px;
-  font-weight: 700;
-  padding: 16px;
+  font-size: 16px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  padding: 14px 16px;
 }
 
 .auth-card .form-input::placeholder {
-  letter-spacing: 2px;
+  letter-spacing: normal;
   font-size: 14px;
+  font-weight: 400;
 }
 
 .auth-error {
