@@ -487,6 +487,15 @@
     }
   }
 
+  // ─── Render Dashboard (dispatch by view) ──
+  async function renderDashboard() {
+    if (currentView === 'visitors') {
+      await renderVisitorsDashboard();
+    } else {
+      await renderEmployeesDashboard();
+    }
+  }
+
   // ─── Initial Load ───────────────────────
   if (!requireAuth()) {
     pinInput.focus();
