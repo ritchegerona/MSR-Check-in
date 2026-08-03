@@ -319,18 +319,19 @@ body::before {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ─── Back Arrow Button (top right) ───────────────────── */
+/* Back Arrow Button (top right) – sized with rem units for responsive scaling */
 .back-arrow {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 0.75rem;   /* 12px */
+  right: 0.75rem; /* 12px */
   background: var(--primary);
   border: none;
-  font-size: 24px;
+  font-size: 1.5rem;   /* 24px */
   color: #ffffff;
   font-weight: bold;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;   /* 40px */
+  height: 2.5rem;  /* 40px */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -342,14 +343,14 @@ body::before {
   background: var(--primary-dark);
 }
 
-/* Responsive adjustments for back arrow */
+/* Responsive adjustments for back arrow – use rem units */
 @media (max-width: 540px) {
   .back-arrow {
-    top: 8px;
-    right: 8px;
-    width: 32px;
-    height: 32px;
-    font-size: 20px;
+    top: 0.5rem;   /* 8px */
+    right: 0.5rem; /* 8px */
+    width: 2rem;   /* 32px */
+    height: 2rem;  /* 32px */
+    font-size: 1.25rem; /* 20px */
   }
 }
 
