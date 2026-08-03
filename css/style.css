@@ -321,15 +321,22 @@ body::before {
   position: absolute;
   top: 12px;
   right: 12px;
-  background: none;
+  background: var(--primary);
   border: none;
   font-size: 24px;
-  color: var(--text-muted);
+  color: #ffffff;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   z-index: 5;
 }
 .back-arrow:hover {
-  color: var(--text-primary);
+  background: var(--primary-dark);
 }
 
 /* ─── Admin Link ────────────────────────── */

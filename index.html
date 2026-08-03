@@ -81,15 +81,6 @@
       </div>
     </div>
 
-    <div class="dashboard-footer">
-      <div class="security-badge">
-        <span data-i18n="infoProtected">🔒 Your information is protected</span>
-      </div>
-        <div class="version-info" data-i18n="versionInfo">
-          Version 2.0 | © 2026 Medical Staffing Resources
-        </div>
-        <div class="dev-credit">Developed and Maintained by: Ritche Gerona</div>
-    </div>
   </section>
 
   <!-- SCREEN 2: VISITOR CHECK-IN -->
@@ -198,16 +189,8 @@
         </div>
 
 
-            <div class="dashboard-footer">
-              <div class="security-badge">
-                <span data-i18n="infoProtected">🔒 Your information is protected</span>
-              </div>
-              <div class="version-info" data-i18n="versionInfo">
-                Version 2.0 | © 2026 Medical Staffing Resources
-              </div>
-              <div class="dev-credit" data-i18n="devCredit">Developed and Maintained by: Ritche Gerona</div>
-            </div>
-            </div>
+        <!-- Footer moved to global section -->
+        <!-- Removed stray closing div and ensured proper closing of visitorScreen section -->
     </section>
 
   <!-- SCREEN 3: EMPLOYEE CHECK-IN -->
@@ -256,20 +239,8 @@
         <span class="security-icon">🛡️</span>
         <p data-i18n="empSecurityMsg">Your check-in helps us maintain a safe and secure workplace.</p>
     </section>
-    <!-- Back to Main Dashboard Button -->
-    <button id="employeeDashboardBack" class="btn-submit" style="margin-top: 12px;">
-      <span class="btn-text" data-i18n="backToDashboard">Back to Dashboard</span>
-    </button>
-    </div>
-
-    <div class="dashboard-footer">
-      <div class="security-badge">
-        <span data-i18n="infoProtected">🔒 Your information is protected</span>
-      </div>
-      <div class="version-info" data-i18n="versionInfo">
-        Version 2.0 | © 2026 Medical Staffing Resources
-      </div>
-    </div>
+    <!-- Removed stray closing div and extra closing section to prevent duplicate footer -->
+    
   </section>
 
   <!-- Employee Success Modal -->
@@ -283,6 +254,15 @@
       </div>
     </div>
   </div>
+
+  <!-- Global Footer (single instance) -->
+  <footer class="dashboard-footer">
+    <!-- Information line removed as per request -->
+    <!-- Version info line -->
+    <div class="version-info" data-i18n="versionInfo"></div>
+    <!-- Credit line -->
+    <p class="dev-credit">Developed and Maintained by: Ritche Gerona</p>
+  </footer>
 
   <script src="js/app.js"></script>
 </body>
