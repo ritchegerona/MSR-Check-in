@@ -50,7 +50,8 @@ body {
   font-family: var(--font);
   background: var(--bg-gradient);
   background-image: url('../background.png');
-  background-size: cover;
+  /* Scale the background image to fill the entire viewport */
+  background-size: 100% 100%;
   background-position: center center;
   background-attachment: fixed;
   background-repeat: no-repeat;
