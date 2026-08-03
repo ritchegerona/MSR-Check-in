@@ -291,7 +291,6 @@
   // ─── Show/Hide Field Error ──────────────
   function setFieldError(input, message) {
     var errorEl = (input.closest('.select-wrapper') || input.parentElement).querySelector('.error-message');
-    if (!errorEl) return;
     if (message) {
       input.classList.add('error');
       input.classList.remove('success');
@@ -370,7 +369,7 @@
       if (firstError) firstError.focus();
       return;
     }
-    submitBtn.classList.add('loading');
+  submitBtn.classList.add('loading');
     submitBtn.disabled = true;
     var visitorData = { action: 'checkin', fullName: fullName.value.trim(), contactNumber: contactNumber.value.trim(), contactPerson: contactPerson.value, purpose: purpose.value };
     try {
@@ -408,6 +407,23 @@
 
   visitorsBtn.addEventListener('click', function () { hideAllModals(); showScreen(visitorScreen); });
   employeeBtn.addEventListener('click', function () { hideAllModals(); showScreen(employeeScreen); });
+
+  // Back to Main Dashboard buttons (arrow icons) for Visitor and Employee screens
+  var visitorBackArrow = document.getElementById('visitorBackBtnTop');
+  if (visitorBackArrow) {
+    visitorBackArrow.addEventListener('click', function () {
+      hideAllModals();
+      showScreen(welcomeScreen);
+    });
+  }
+
+  var employeeBackArrow = document.getElementById('employeeBackBtnTop');
+  if (employeeBackArrow) {
+    employeeBackArrow.addEventListener('click', function () {
+      hideAllModals();
+      showScreen(welcomeScreen);
+    });
+  }
 
   // ─── Employee Device Login Tracking ──────
   var EMPLOYEE_LOGIN_KEY = 'msr_employee_logged_in_device';

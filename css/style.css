@@ -316,6 +316,22 @@ body::before {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ─── Back Arrow Button (top right) ───────────────────── */
+.back-arrow {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--text-muted);
+  cursor: pointer;
+  z-index: 5;
+}
+.back-arrow:hover {
+  color: var(--text-primary);
+}
+
 /* ─── Admin Link ────────────────────────── */
 .admin-link {
   display: flex;

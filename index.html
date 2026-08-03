@@ -94,6 +94,8 @@
 
   <!-- SCREEN 2: VISITOR CHECK-IN -->
   <section id="visitorScreen" class="screen hidden">
+    <!-- Back Arrow (top right) for Visitor Screen -->
+    <button id="visitorBackBtnTop" class="back-arrow" aria-label="Back to Dashboard">←</button>
     <div class="visitor-header">
       <img src="images/MSR_logo.png" alt="MSR Logo" class="main-logo">
       <h1 data-i18n="visitorHeader">Visitors Check-in System</h1>
@@ -183,31 +185,35 @@
       </div>
     </div>
 
-    <!-- Visitor Success Modal -->
-    <div id="visitorSuccessModal" class="modal hidden">
-      <div class="modal-content">
-        <h3 data-i18n="successTitle">Success</h3>
-        <p id="visitorSuccessMessage"></p>
-        <div id="visitorSuccessBtnContainer" class="hidden">
-          <button id="visitorBackBtn" class="btn-submit" data-i18n="backToDashboard">Back to Dashboard</button>
-          <button id="visitorCloseBtn" class="btn-submit" style="background: #6c757d;" data-i18n="close">Close</button>
+        <!-- Visitor Success Modal -->
+        <div id="visitorSuccessModal" class="modal hidden">
+          <div class="modal-content">
+            <h3 data-i18n="successTitle">Success</h3>
+            <p id="visitorSuccessMessage"></p>
+            <div id="visitorSuccessBtnContainer" class="hidden">
+              <button id="visitorBackBtn" class="btn-submit" data-i18n="backToDashboard">Back to Dashboard</button>
+              <button id="visitorCloseBtn" class="btn-submit" style="background: #6c757d;" data-i18n="close">Close</button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
 
-        <div class="dashboard-footer">
-          <div class="security-badge">
-            <span data-i18n="infoProtected">🔒 Your information is protected</span>
-          </div>
-          <div class="version-info" data-i18n="versionInfo">
-            Version 2.0 | © 2026 Medical Staffing Resources
-          </div>
-          <div class="dev-credit" data-i18n="devCredit">Developed and Maintained by: Ritche Gerona</div>
-        </div>
-  </section>
+
+            <div class="dashboard-footer">
+              <div class="security-badge">
+                <span data-i18n="infoProtected">🔒 Your information is protected</span>
+              </div>
+              <div class="version-info" data-i18n="versionInfo">
+                Version 2.0 | © 2026 Medical Staffing Resources
+              </div>
+              <div class="dev-credit" data-i18n="devCredit">Developed and Maintained by: Ritche Gerona</div>
+            </div>
+            </div>
+    </section>
 
   <!-- SCREEN 3: EMPLOYEE CHECK-IN -->
   <section id="employeeScreen" class="screen hidden">
+    <!-- Back Arrow (top right) for Employee Screen -->
+    <button id="employeeBackBtnTop" class="back-arrow" aria-label="Back to Dashboard">←</button>
     <div class="employee-card">
       <div class="emp-header">
         <img src="images/MSR_logo.png" alt="MSR Logo" class="main-logo">
@@ -249,7 +255,11 @@
       <div class="emp-security-box">
         <span class="security-icon">🛡️</span>
         <p data-i18n="empSecurityMsg">Your check-in helps us maintain a safe and secure workplace.</p>
-      </div>
+    </section>
+    <!-- Back to Main Dashboard Button -->
+    <button id="employeeDashboardBack" class="btn-submit" style="margin-top: 12px;">
+      <span class="btn-text" data-i18n="backToDashboard">Back to Dashboard</span>
+    </button>
     </div>
 
     <div class="dashboard-footer">
