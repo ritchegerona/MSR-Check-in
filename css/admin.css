@@ -52,7 +52,7 @@ body.admin-page::before {
   align-items: center;
   gap: 10px;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 1.125rem; /* 18px */
   color: var(--text-primary);
   text-decoration: none;
 }
@@ -84,7 +84,7 @@ body.admin-page::before {
 
 .btn-logout {
   padding: 8px 18px;
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   font-weight: 600;
   font-family: var(--font);
   color: var(--text-secondary);
@@ -159,7 +159,7 @@ body.admin-page::before {
 }
 
 .stat-card-label {
-  font-size: 12px;
+  font-size: 0.75rem; /* 12px */
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -216,7 +216,7 @@ body.admin-page::before {
 .search-input {
   width: 100%;
   padding: 12px 16px 12px 42px;
-  font-size: 14px;
+  font-size: 0.875rem; /* 14px */
   font-family: var(--font);
   color: var(--text-primary);
   background: var(--card-bg);
@@ -316,7 +316,7 @@ body.admin-page::before {
 .visitors-table th {
   padding: 14px 16px;
   text-align: left;
-  font-size: 11px;
+  font-size: 0.6875rem; /* 11px */
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -420,13 +420,13 @@ body.admin-page::before {
 }
 
 .empty-state h3 {
-  font-size: 16px;
+  font-size: 1rem; /* 16px */
   color: var(--text-secondary);
   margin-bottom: 4px;
 }
 
 .empty-state p {
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
 }
 
 /* ─── Manual Override Section ───────────── */
@@ -557,7 +557,7 @@ body.admin-page::before {
 }
 
 .auth-error {
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   color: var(--error);
   margin-top: 8px;
   display: none;
@@ -586,7 +586,7 @@ body.admin-page::before {
   gap: 6px;
 }
 .admin-footer .version-info {
-  font-size: 12px;
+  font-size: 0.75rem; /* 12px */
   opacity: 0.85;
 }
 
@@ -596,7 +596,7 @@ body.admin-page::before {
   align-items: center;
   gap: 4px;
   padding: 8px 14px;
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   color: var(--text-primary);
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -646,7 +646,7 @@ body.admin-page::before {
   .visitors-table th,
   .visitors-table td {
     padding: 10px 12px;
-    font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   }
 
   .auth-card {
