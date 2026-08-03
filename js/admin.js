@@ -314,8 +314,15 @@
     pinInput.focus();
   });
 
+  // Back button: navigate back to the previous page (or dashboard)
   backBtn.addEventListener('click', function () {
-    window.location.href = 'index.html';
+    // Use history.back() for a more natural back navigation if possible
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      // Fallback to the main dashboard
+      window.location.href = 'index.html';
+    }
   });
 
   // ─── Toast Notification ─────────────────
