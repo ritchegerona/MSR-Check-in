@@ -9,6 +9,20 @@ body.admin-page {
   align-items: stretch;
   padding: 0;
   min-height: 100vh;
+  background-image: url('../background.png');
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+body.admin-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(224, 242, 245, 0.88) 100%);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .admin-nav {
@@ -16,11 +30,12 @@ body.admin-page {
   background: var(--card-bg);
   border-bottom: 1px solid var(--border);
   padding: 0 24px;
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
 .admin-nav-inner {
@@ -43,15 +58,22 @@ body.admin-page {
 }
 
 .admin-nav-brand .brand-icon {
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  width: 40px;
+  height: 40px;
+  background: transparent;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 4px;
+  padding: 2px;
+}
+
+.admin-nav-brand .brand-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
 }
 
 .admin-nav-actions {
@@ -126,11 +148,14 @@ body.admin-page {
   padding: 20px 24px;
   border: 1px solid var(--border);
   transition: var(--transition);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .stat-card:hover {
-  box-shadow: var(--card-shadow);
-  transform: translateY(-2px);
+  box-shadow: var(--card-shadow-hover);
+  transform: translateY(-4px);
+  border-color: var(--primary);
 }
 
 .stat-card-label {
@@ -199,6 +224,8 @@ body.admin-page {
   border-radius: var(--radius-sm);
   outline: none;
   transition: var(--transition);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .search-input::placeholder {
@@ -229,6 +256,8 @@ body.admin-page {
   border-radius: 20px;
   cursor: pointer;
   transition: var(--transition);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .filter-tab:hover {
@@ -265,6 +294,8 @@ body.admin-page {
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   overflow: hidden;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .table-scroll {
@@ -405,6 +436,8 @@ body.admin-page {
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   overflow: hidden;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .override-header {
@@ -488,6 +521,9 @@ body.admin-page {
   text-align: center;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
   animation: slideUp 0.4s ease-out;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 .auth-card .lock-icon {
@@ -529,6 +565,54 @@ body.admin-page {
 
 .auth-error.visible {
   display: block;
+}
+
+/* ─── Admin Footer ──────────────────────── */
+.admin-footer {
+  text-align: center;
+  padding: 24px 0;
+  margin-top: auto;
+  font-size: 13px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.admin-footer .security-badge {
+  margin-bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.admin-footer .version-info {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+/* ─── Language Selector (Admin) ─────────── */
+.admin-lang-selector {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--text-primary);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--font);
+  font-weight: 500;
+}
+.admin-lang-selector:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.admin-lang-selector .chevron {
+  margin-left: 4px;
+  font-size: 10px;
 }
 
 /* ─── Responsive (Admin) ────────────────── */

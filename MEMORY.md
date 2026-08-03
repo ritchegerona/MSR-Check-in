@@ -10,7 +10,7 @@ A modern, professional visitor check-in system with a glassmorphism UI and Googl
 
 **Developer:** Ritche Gerona
 **Company:** MSR (logo: `images/MSR_logo.png`)
-**Last Updated:** August 2, 2026
+**Last Updated:** August 3, 2026
 
 ### Check-in Flow
 1. Page loads → Chooser modal appears (Visitor / MSR Employee)
@@ -42,11 +42,17 @@ A modern, professional visitor check-in system with a glassmorphism UI and Googl
 ### CSS Features
 - CSS variables for theming (`:root`)
 - CSS Grid + Flexbox layout
-- `backdrop-filter: blur()` for glass effect
+- `backdrop-filter: blur()` for glass effect (enhanced to 24px)
+- `background.png` as fixed background image with semi-transparent overlay
 - Smooth transitions on all interactive elements
 - Custom styled `<select>` dropdowns with arrow indicator
-- Gradient button with hover lift effect
+- Gradient button with hover lift effect + enhanced shadows
 - Optgroup labels: white text on teal background with `!important` to override browser defaults
+- Uniform `.main-logo` class (100px) across all screens
+- Uniform `.dashboard-footer` class across all 3 check-in screens
+- `.admin-footer` class for admin dashboard
+- `.admin-lang-selector` for admin language toggle
+- Enterprise-grade UI polish: layered shadows, glassmorphism, hover effects
 
 ---
 
@@ -54,16 +60,17 @@ A modern, professional visitor check-in system with a glassmorphism UI and Googl
 
 ```
 /
-├── index.html          # Check-in page (public) with chooser modal
-├── admin.html          # Admin dashboard (PIN-protected)
+├── index.html          # Check-in page (public) with chooser modal + EN/TL i18n
+├── admin.html          # Admin dashboard (PIN-protected) + EN/TL i18n + footer
+├── background.png      # Background image (used across all pages)
 ├── css/
-│   ├── style.css       # Main stylesheet (design system)
-│   └── admin.css       # Admin-specific styles
+│   ├── style.css       # Main stylesheet (design system + background + footer)
+│   └── admin.css       # Admin-specific styles (+ background + footer + lang selector)
 ├── js/
-│   ├── app.js          # Check-in page logic (chooser + visitor + employee)
-│   └── admin.js        # Admin dashboard logic
+│   ├── app.js          # Check-in page logic (chooser + visitor + employee + i18n)
+│   └── admin.js        # Admin dashboard logic (+ i18n)
 ├── images/
-│   └── MSR_logo.png    # Company logo
+│   └── MSR_logo.png    # Company logo (uniform 100px on check-in, 40px on admin nav)
 ├── Code.gs             # Google Apps Script backend
 ├── README.md           # Setup & usage instructions
 └── MEMORY.md           # This file — project memory
@@ -146,12 +153,28 @@ All POST requests send JSON with an `action` field:
 
 ## 🔐 Admin Dashboard
 
-- **PIN:** 1234 (configurable in `Code.gs`)
+- **Password:** MSRAdmin2026 (configurable in `js/admin.js`)
 - **Keyboard shortcut:** Ctrl+Shift+A / Cmd+Shift+A from check-in page
 - **Feature:** Search by name/contact/person/purpose
 - **Filter tabs:** All / On-Site / Checked Out
 - **Actions:** Check out visitor, Delete entry
 - **Manual Override:** Form to add visitors manually
+- **Language toggle:** EN/TL selector in nav bar
+- **Footer:** Uniform admin footer with security badge + version info
+
+---
+
+## 🌐 Language Support (i18n)
+
+- **Languages:** English (en) and Tagalog (tl)
+- **Persistence:** `localStorage` key `msr_language`
+- **Toggle:** Click 🌐 button in top bar (index) or nav bar (admin)
+- **Implementation:**
+  - `data-i18n="key"` attributes on text elements
+  - `data-i18n-placeholder="key"` attributes on input placeholders
+  - `translations` object in both `app.js` and `admin.js`
+  - `setLanguage(lang)` function updates all elements + re-renders tables
+  - All validation messages, success toasts, confirm dialogs translated
 
 ---
 
@@ -170,3 +193,8 @@ MIT — Free to use, modify, and distribute.
 ---
 
 *Developed by Ritche Gerona*
+
+---
+
+## User Preferences
+- **Do NOT commit and push unless explicitly told to do so by the user.**

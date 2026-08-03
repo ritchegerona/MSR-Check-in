@@ -16,7 +16,7 @@
 </head>
 <body>
 
-  <!-- Animated Background Decorations -->
+  <!-- Background Decorations -->
   <div class="bg-decoration bg-decoration--1" aria-hidden="true"></div>
   <div class="bg-decoration bg-decoration--2" aria-hidden="true"></div>
   <div class="bg-decoration bg-decoration--3" aria-hidden="true"></div>
@@ -24,189 +24,256 @@
   <!-- Toast Notification -->
   <div id="toast" class="toast" role="alert" aria-live="polite"></div>
 
-  <!-- Chooser Modal -->
-  <div id="chooserModal" class="modal hidden">
-    <div class="modal-content">
-      <h3 style="margin-bottom: 20px; color: var(--text-primary);">Who are you?</h3>
-      <div style="display: flex; flex-direction: column; gap: 12px;">
-<button class="btn-submit" id="visitorsBtn" style="width: 100%; justify-content: center;">
-  Visitor
-</button>
-<button class="btn-submit" id="employeeBtn" style="width: 100%; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary));">
-  MSR Employee
-</button>
+  <!-- Top Bar (Shared across screens) -->
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <span id="currentDate" class="date-display"></span>
+    </div>
+    <div class="top-bar-center">
+      <span id="currentTime" class="time-display"></span>
+    </div>
+    <div class="top-bar-right">
+      <div class="lang-selector" id="langSelector">
+        <span id="langLabel">🌐 English</span>
+        <span class="chevron">▼</span>
       </div>
     </div>
   </div>
 
-<!-- Employee Form Modal -->
-<div id="employeeModal" class="modal hidden">
-<div class="modal-content">
-<div class="logo-icon" style="margin-bottom: 16px; text-align: center;"><img src="images/MSR_logo.png" alt="MSR Logo" class="logo-img" style="max-width: 140px;"></div>
-<h3 style="margin-bottom: 20px; color: var(--text-primary); text-align: center;" id="employeeModalTitle">Employee Check-in</h3>
-<form id="employeeForm" novalidate autocomplete="off">
-<div class="form-group">
-<label class="form-label" for="employeeName">Full Name</label>
-<div class="select-wrapper">
-<select id="employeeName" class="form-select" required aria-describedby="employeeNameError">
-<option value="">Select employee name...</option>
-</select>
-</div>
-<div class="error-message" id="employeeNameError" role="alert"></div>
-</div>
-
-<div class="form-group">
-<label class="form-label" for="employeeDept">Department</label>
-<div class="select-wrapper">
-<select id="employeeDept" class="form-select" required aria-describedby="employeeDeptError">
-<option value="">Select department...</option>
-</select>
-</div>
-<div class="error-message" id="employeeDeptError" role="alert"></div>
-</div>
-
-<button type="submit" id="employeeSubmitBtn" class="btn-submit" style="margin-top: 8px;">
-<span class="spinner"></span>
-<span class="btn-text">Check In</span>
-</button>
-</form>
-</div>
-</div>
-<!-- Employee Success Modal -->
-<div id="employeeSuccessModal" class="modal hidden">
-  <div class="modal-content">
-    <h3 style="margin-bottom: 16px; color: var(--text-primary);">Success</h3>
-    <p id="employeeSuccessMessage" style="margin-bottom: 24px; color: var(--text-secondary); font-size: 15px;"></p>
-    <div id="employeeSuccessBtnContainer" class="hidden" style="display: flex; flex-direction: column; gap: 12px;">
-      <button id="employeeBackBtn" class="btn-submit" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
-        <span class="btn-text">Back to Dashboard</span>
-      </button>
-      <button id="employeeCloseBtn" class="btn-submit" style="background: #6c757d;">
-        <span class="btn-text">Close</span>
-      </button>
+  <!-- SCREEN 1: WELCOME DASHBOARD -->
+  <section id="welcomeScreen" class="screen active">
+    <div class="welcome-header">
+      <img src="images/MSR_logo.png" alt="MSR Logo" class="main-logo">
+      <h2 class="system-title" data-i18n="systemTitle">Visitor Check-in System</h2>
     </div>
-  </div>
-</div>
-<!-- Visitor Success Modal -->
-<div id="visitorSuccessModal" class="modal hidden">
-  <div class="modal-content">
-    <h3 style="margin-bottom: 16px; color: var(--text-primary);">Success</h3>
-    <p id="visitorSuccessMessage" style="margin-bottom: 24px; color: var(--text-secondary); font-size: 15px;"></p>
-    <div id="visitorSuccessBtnContainer" class="hidden" style="display: flex; flex-direction: column; gap: 12px;">
-      <button id="visitorBackBtn" class="btn-submit" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
-        <span class="btn-text">Back to Dashboard</span>
-      </button>
-      <button id="visitorCloseBtn" class="btn-submit" style="background: #6c757d;">
-        <span class="btn-text">Close</span>
-      </button>
-    </div>
-  </div>
-</div>
-  <!-- Main Container (hidden until choice) -->
-  <div id="mainContainer" class="container hidden">
 
-    <!-- Check-in Card -->
-    <div class="card">
+    <div class="welcome-card">
+      <h1 data-i18n="welcomeTitle">Welcome to MSR</h1>
+      <p data-i18n="welcomeSub">Please select your access type</p>
+      <div class="accent-line"></div>
 
-      <!-- Header -->
-      <header class="header">
-        <div class="logo-icon" aria-hidden="true">
-          <img src="images/MSR_logo.png" alt="Company Logo" class="logo-img">
-        </div>
-        <h1>Visitors Check-in</h1>
-        <p>Sign in to your visit</p>
-      </header>
-
-      <!-- Check-in Form -->
-      <form id="checkinForm" novalidate autocomplete="off">
-
-        <!-- Full Name -->
-        <div class="form-group">
-          <label class="form-label" for="fullName">Full Name</label>
-          <input
-            type="text"
-            id="fullName"
-            class="form-input"
-            placeholder="Enter your full name"
-            required
-            autocomplete="name"
-            aria-describedby="fullNameError"
-          >
-          <div class="error-message" id="fullNameError" role="alert"></div>
-        </div>
-
-        <!-- Contact Number -->
-        <div class="form-group">
-          <label class="form-label" for="contactNumber">Contact Number</label>
-          <input
-            type="tel"
-            id="contactNumber"
-            class="form-input"
-            placeholder="09XX XXX XXXX"
-            required
-            autocomplete="tel"
-            aria-describedby="contactError"
-          >
-          <div class="error-message" id="contactError" role="alert"></div>
-        </div>
-
-        <!-- Contact Person -->
-        <div class="form-group">
-          <label class="form-label" for="contactPerson">Contact Person</label>
-          <div class="select-wrapper">
-            <select
-              id="contactPerson"
-              class="form-select"
-              required
-              aria-describedby="personError"
-            >
-              <option value="">Select person to visit...</option>
-            </select>
+      <div class="access-grid">
+        <button id="visitorsBtn" class="access-card">
+          <div class="access-icon visitor-icon">👤</div>
+          <div class="access-text">
+            <span class="access-label" data-i18n="visitorLabel">Visitor</span>
+            <span class="access-sub" data-i18n="visitorSub">Check in as a guest</span>
           </div>
-          <div class="error-message" id="personError" role="alert"></div>
-        </div>
-
-        <!-- Purpose of Visit -->
-        <div class="form-group">
-          <label class="form-label" for="purpose">Purpose of Visit</label>
-          <div class="select-wrapper">
-            <select
-              id="purpose"
-              class="form-select"
-              required
-              aria-describedby="purposeError"
-            >
-              <option value="">Select purpose of visit...</option>
-            </select>
-          </div>
-          <div class="error-message" id="purposeError" role="alert"></div>
-        </div>
-
-        <!-- Submit Button -->
-        <button type="submit" id="submitBtn" class="btn-submit">
-          <span class="spinner"></span>
-          <span class="btn-text">Submit Check-in</span>
+          <div class="access-arrow">❯</div>
         </button>
 
-      </form>
+        <button id="employeeBtn" class="access-card">
+          <div class="access-icon employee-icon">💼</div>
+          <div class="access-text">
+            <span class="access-label" data-i18n="employeeLabel">MSR Employee</span>
+            <span class="access-sub" data-i18n="employeeSub">Staff access</span>
+          </div>
+          <div class="access-arrow">❯</div>
+        </button>
+      </div>
 
-      <!-- Admin Login -->
-      <button id="adminBtn" class="admin-link" aria-label="Admin Login">
-        🔧 Admin Login
-      </button>
-
+      <div class="help-section">
+        <div class="help-icon">❓</div>
+        <div class="help-text">
+          <strong data-i18n="needHelp">Need help?</strong>
+          <span data-i18n="askDesk">Ask the Reception Desk</span>
+        </div>
+      </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-      Powered by MSR Check-in &middot; v1.0<br>
-      <em>Developed by Ritche Gerona</em>
-    </footer>
+    <div class="dashboard-footer">
+      <div class="security-badge">
+        <span data-i18n="infoProtected">🔒 Your information is protected</span>
+      </div>
+        <div class="version-info" data-i18n="versionInfo">
+          Version 2.0 | © 2026 Medical Staffing Resources
+        </div>
+        <div class="dev-credit">Developed and Maintained by: Ritche Gerona</div>
+    </div>
+  </section>
 
+  <!-- SCREEN 2: VISITOR CHECK-IN -->
+  <section id="visitorScreen" class="screen hidden">
+    <div class="visitor-header">
+      <img src="images/MSR_logo.png" alt="MSR Logo" class="main-logo">
+      <h1 data-i18n="visitorHeader">Visitors Check-in System</h1>
+      <div class="accent-line"></div>
+      <h2 class="welcome-msg" data-i18n="welcomeMsg">Welcome!</h2>
+      <p data-i18n="visitorSubPrompt">Please complete your visitor information.</p>
+    </div>
+
+    <div class="visitor-card">
+      <form id="checkinForm" novalidate autocomplete="off">
+        <div class="input-with-icon">
+          <div class="field-icon">👤</div>
+          <div class="field-group">
+            <label for="fullName" data-i18n="fullNameLabel">FULL NAME</label>
+            <input type="text" id="fullName" class="form-input" data-i18n-placeholder="fullNamePlaceholder" placeholder="Enter your full name" required>
+            <div class="error-message" id="fullNameError"></div>
+          </div>
+        </div>
+
+        <div class="input-with-icon">
+          <div class="field-icon">📞</div>
+          <div class="field-group">
+            <label for="contactNumber" data-i18n="contactLabel">CONTACT NUMBER</label>
+            <input type="tel" id="contactNumber" class="form-input" placeholder="09XX XXX XXXX" required>
+            <div class="error-message" id="contactError"></div>
+          </div>
+        </div>
+
+        <div class="input-with-icon">
+          <div class="field-icon">👥</div>
+          <div class="field-group">
+            <label for="contactPerson" data-i18n="personLabel">PERSON TO VISIT</label>
+            <div class="select-wrapper">
+              <select id="contactPerson" class="form-select" required>
+                <option value="" data-i18n="selectPersonPlaceholder">Select person to visit...</option>
+              </select>
+            </div>
+            <div class="error-message" id="personError"></div>
+          </div>
+        </div>
+
+        <div class="input-with-icon">
+          <div class="field-icon">📄</div>
+          <div class="field-group">
+            <label for="purpose" data-i18n="purposeLabel">PURPOSE OF VISIT</label>
+            <div class="select-wrapper">
+              <select id="purpose" class="form-select" required>
+                <option value="" data-i18n="selectPurposePlaceholder">Select purpose of visit...</option>
+              </select>
+            </div>
+            <div class="error-message" id="purposeError"></div>
+          </div>
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn-primary">
+          <span class="btn-icon">✓</span> <span class="btn-text" data-i18n="continueCheckIn">Continue Check-in</span> <span class="btn-arrow">→</span>
+          <span class="spinner"></span>
+        </button>
+      </form>
+
+      <div class="security-notice">
+        <span class="notice-icon">🛡️</span>
+        <p data-i18n="securityNotice">Your information is securely protected and used only for visitor management.</p>
+      </div>
+
+      <div class="admin-login-container">
+        <span data-i18n="orText">OR</span>
+        <button id="adminBtn" class="admin-link-btn">
+          <span class="admin-icon">👤</span> <span data-i18n="adminLogin">Reception / Admin Login</span>
+          <small data-i18n="adminLoginSub">For authorized personnel only.</small>
+        </button>
+      </div>
+
+      <div class="value-props">
+        <div class="prop">
+          <span class="prop-icon">🛡️</span>
+          <div><strong data-i18n="secure">Secure</strong><br><span data-i18n="secureSub">Your data is safe</span></div>
+        </div>
+        <div class="prop">
+          <span class="prop-icon">⏱️</span>
+          <div><strong data-i18n="fast">Fast</strong><br><span data-i18n="fastSub">Quick check-in</span></div>
+        </div>
+        <div class="prop">
+          <span class="prop-icon">🏢</span>
+          <div><strong data-i18n="professional">Professional</strong><br><span data-i18n="professionalSub">We value your visit</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visitor Success Modal -->
+    <div id="visitorSuccessModal" class="modal hidden">
+      <div class="modal-content">
+        <h3 data-i18n="successTitle">Success</h3>
+        <p id="visitorSuccessMessage"></p>
+        <div id="visitorSuccessBtnContainer" class="hidden">
+          <button id="visitorBackBtn" class="btn-submit" data-i18n="backToDashboard">Back to Dashboard</button>
+          <button id="visitorCloseBtn" class="btn-submit" style="background: #6c757d;" data-i18n="close">Close</button>
+        </div>
+      </div>
+    </div>
+
+        <div class="dashboard-footer">
+          <div class="security-badge">
+            <span data-i18n="infoProtected">🔒 Your information is protected</span>
+          </div>
+          <div class="version-info" data-i18n="versionInfo">
+            Version 2.0 | © 2026 Medical Staffing Resources
+          </div>
+          <div class="dev-credit" data-i18n="devCredit">Developed and Maintained by: Ritche Gerona</div>
+        </div>
+  </section>
+
+  <!-- SCREEN 3: EMPLOYEE CHECK-IN -->
+  <section id="employeeScreen" class="screen hidden">
+    <div class="employee-card">
+      <div class="emp-header">
+        <img src="images/MSR_logo.png" alt="MSR Logo" class="main-logo">
+        <div class="emp-avatar">
+          <span class="avatar-icon">🪪</span>
+        </div>
+        <h1 data-i18n="employeeHeader">Employee Check-in</h1>
+        <div class="accent-line"></div>
+        <p data-i18n="employeeSubtitle">Please select your details below to record your check-in.</p>
+      </div>
+
+      <form id="employeeForm" novalidate autocomplete="off">
+        <div class="emp-field">
+          <label for="employeeName" data-i18n="nameLabel">FULL NAME</label>
+          <div class="select-wrapper">
+            <select id="employeeName" class="form-select" required>
+              <option value="" data-i18n="selectEmployeePlaceholder">Select employee name...</option>
+            </select>
+          </div>
+          <div class="error-message" id="employeeNameError"></div>
+        </div>
+
+        <div class="emp-field">
+          <label for="employeeDept" data-i18n="deptLabel">DEPARTMENT</label>
+          <div class="select-wrapper">
+            <select id="employeeDept" class="form-select" required>
+              <option value="" data-i18n="deptPlaceholder">Select department...</option>
+            </select>
+          </div>
+          <div class="error-message" id="employeeDeptError"></div>
+        </div>
+
+        <button type="submit" id="employeeSubmitBtn" class="btn-employee">
+          <span class="btn-icon">✓</span> <span data-i18n="checkInBtn">Check In</span>
+          <span class="spinner"></span>
+        </button>
+      </form>
+
+      <div class="emp-security-box">
+        <span class="security-icon">🛡️</span>
+        <p data-i18n="empSecurityMsg">Your check-in helps us maintain a safe and secure workplace.</p>
+      </div>
+    </div>
+
+    <div class="dashboard-footer">
+      <div class="security-badge">
+        <span data-i18n="infoProtected">🔒 Your information is protected</span>
+      </div>
+      <div class="version-info" data-i18n="versionInfo">
+        Version 2.0 | © 2026 Medical Staffing Resources
+      </div>
+    </div>
+  </section>
+
+  <!-- Employee Success Modal -->
+  <div id="employeeSuccessModal" class="modal hidden">
+    <div class="modal-content">
+      <h3 data-i18n="successTitle">Success</h3>
+      <p id="employeeSuccessMessage"></p>
+      <div id="employeeSuccessBtnContainer" class="hidden">
+        <button id="employeeBackBtn" class="btn-submit" data-i18n="backToDashboard">Back to Dashboard</button>
+        <button id="employeeCloseBtn" class="btn-submit" style="background: #6c757d;" data-i18n="close">Close</button>
+      </div>
+    </div>
   </div>
 
-  <!-- Scripts -->
   <script src="js/app.js"></script>
-
 </body>
 </html>

@@ -1,6 +1,7 @@
 /* ============================================
    VISITORS LOGIN SYSTEM - Admin Dashboard
    Authentication, data table, search, CRUD via API
+   With EN/TL language support
    ============================================ */
 
 (function () {
@@ -8,39 +9,258 @@
 
   // ─── Configuration ──────────────────────────
   const API_URL = 'https://script.google.com/macros/s/AKfycbxs9sE5s0jaNhpvMxChC-i79h9h3NuUBQo_NQSqdQwPpgWpgpMc_Pw5BBxFT5ZTCtSvzQ/exec';
-
-  // ─── Admin PIN (simple auth) ────────────
   const ADMIN_PASSWORD = 'MSRAdmin2026';
   const AUTH_KEY = 'admin_authenticated';
+  const LANG_KEY = 'msr_language';
+
+  let currentLang = localStorage.getItem(LANG_KEY) || 'en';
+
+  // ─── Translations ─────────────────────────
+  const translations = {
+    en: {
+      adminAccess: 'Admin Access',
+      adminAccessSub: 'Enter your password to access the dashboard',
+      passwordPlaceholder: 'Password',
+      authError: '❌ Incorrect password. Try again.',
+      unlockDashboard: 'Unlock Dashboard',
+      adminPanel: 'Admin Panel',
+      back: 'Back',
+      logout: 'Logout',
+      totalToday: 'Total Today',
+      visitorsCheckedIn: 'visitors checked in today',
+      currentlyOnSite: 'Currently On-Site',
+      visitorsInBuilding: 'visitors in the building',
+      recentEntry: 'Recent Entry',
+      mostRecentCheckin: 'most recent check-in',
+      visitors: 'Visitors',
+      employees: 'Employees',
+      searchPlaceholder: 'Search by name, contact, person, or purpose...',
+      all: 'All',
+      onSite: 'On-Site',
+      checkedOut: 'Checked Out',
+      visitorLog: '📋 Visitor Log',
+      thID: 'ID',
+      thName: 'Name',
+      thContact: 'Contact',
+      thContactPerson: 'Contact Person',
+      thPurpose: 'Purpose',
+      thStatus: 'Status',
+      thTime: 'Time',
+      thAction: 'Action',
+      noVisitorsFound: 'No visitors found',
+      visitorsWillAppear: 'Visitors who check in will appear here.',
+      manualOverride: 'Manual Override — Add Visitor',
+      fullName: 'Full Name',
+      contactNumber: 'Contact Number',
+      contactPerson: 'Contact Person',
+      selectPersonByDept: 'Select person by department...',
+      purpose: 'Purpose',
+      selectPurpose: 'Select purpose...',
+      purposeMeeting: 'Meeting',
+      purposeDelivery: 'Delivery',
+      purposeInterview: 'Interview',
+      purposeMaintenance: 'Maintenance',
+      purposePersonalVisit: 'Personal Visit',
+      purposeJobApp: 'Job Application',
+      purposeClientVisit: 'Client Visit',
+      purposeBriefing: 'Final Briefing',
+      purposeSubmission: 'Submission of Documents',
+      purposeOther: 'Other',
+      addVisitorManually: '➕ Add Visitor Manually',
+      employeeLog: '👥 Employee Log',
+      thEmployeeID: 'Employee ID',
+      thDepartment: 'Department',
+      thType: 'Type',
+      noEmployeesFound: 'No employees found',
+      employeesWillAppear: 'Employees who check in will appear here.',
+      infoProtected: '🔒 Your information is protected',
+        versionInfo: 'Version 2.0 | © 2026 Medical Staffing Resources',
+        devCredit: 'Developed and Maintained by: Ritche Gerona',
+      statusOnSite: 'On-site',
+      statusLeft: 'Left',
+      checkOut: 'Check Out',
+      delete: 'Delete',
+      checkOutConfirm: 'Check out "{name}"?',
+      checkOutSuccess: '{name} has been checked out.',
+      deleteConfirm: 'Delete entry for "{name}"? This cannot be undone.',
+      deleteSuccess: 'Entry deleted.',
+      deleteEmployeeConfirm: 'Delete entry for "{name}"? This cannot be undone.',
+      deleteEmployeeSuccess: 'Employee entry deleted.',
+      overrideError: 'Please fill in all override fields.',
+      overrideSuccess: 'Manually added "{name}"',
+      overrideFail: 'Failed to add visitor. Please try again.',
+      checkOutFail: 'Failed to check out. Please try again.',
+      deleteFail: 'Failed to delete. Please try again.',
+      deleteEmployeeFail: 'Failed to delete. Please try again.',
+      loadVisitorsFail: 'Failed to load visitors. Check your API URL.',
+      loadDashboardFail: 'Failed to load dashboard. Check your API URL.',
+      loadEmployeesFail: 'Failed to load employees. Check your API URL.',
+      noEntriesToday: 'No entries today',
+      noDataYet: 'No data yet',
+      justNow: 'Just now',
+      minAgo: '{n} min ago',
+      hAgo: '{n}h ago',
+      dAgo: '{n}d ago',
+      languageLabel: '🌐 English'
+    },
+    tl: {
+      adminAccess: 'Admin Access',
+      adminAccessSub: 'Ilagay ang iyong password upang ma-access ang dashboard',
+      passwordPlaceholder: 'Password',
+      authError: '❌ Maling password. Subukan muli.',
+      unlockDashboard: 'Buksan ang Dashboard',
+      adminPanel: 'Admin Panel',
+      back: 'Bumalik',
+      logout: 'Mag-logout',
+      totalToday: 'Kabuuan Ngayon',
+      visitorsCheckedIn: 'mga bisita na nag-check in ngayon',
+      currentlyOnSite: 'Kasalukuyang Nasa Site',
+      visitorsInBuilding: 'mga bisita sa gusali',
+      recentEntry: 'Kamakailang Entry',
+      mostRecentCheckin: 'pinakabagong check-in',
+      visitors: 'Mga Bisita',
+      employees: 'Mga Empleyado',
+      searchPlaceholder: 'Maghanap ayon sa pangalan, kontak, tao, o layunin...',
+      all: 'Lahat',
+      onSite: 'Nasa Site',
+      checkedOut: 'Lumabas Na',
+      visitorLog: '📋 Log ng Bisita',
+      thID: 'ID',
+      thName: 'Pangalan',
+      thContact: 'Kontak',
+      thContactPerson: 'Taong Kokontakin',
+      thPurpose: 'Layunin',
+      thStatus: 'Status',
+      thTime: 'Oras',
+      thAction: 'Aksyon',
+      noVisitorsFound: 'Walang nakitang bisita',
+      visitorsWillAppear: 'Ang mga bisita na mag-check in ay lalabas dito.',
+      manualOverride: 'Manual Override — Magdagdag ng Bisita',
+      fullName: 'Buong Pangalan',
+      contactNumber: 'Numero ng Kontak',
+      contactPerson: 'Taong Kokontakin',
+      selectPersonByDept: 'Pumili ng tao ayon sa departamento...',
+      purpose: 'Layunin',
+      selectPurpose: 'Pumili ng layunin...',
+      purposeMeeting: 'Meeting',
+      purposeDelivery: 'Delivery',
+      purposeInterview: 'Interview',
+      purposeMaintenance: 'Maintenance',
+      purposePersonalVisit: 'Personal Visit',
+      purposeJobApp: 'Job Application',
+      purposeClientVisit: 'Client Visit',
+      purposeBriefing: 'Final Briefing',
+      purposeSubmission: 'Submission of Documents',
+      purposeOther: 'Other',
+      addVisitorManually: '➕ Magdagdag ng Bisita Manuwal',
+      employeeLog: '👥 Log ng Empleyado',
+      thEmployeeID: 'Employee ID',
+      thDepartment: 'Departamento',
+      thType: 'Uri',
+      noEmployeesFound: 'Walang nakitang empleyado',
+      employeesWillAppear: 'Ang mga empleyadong mag-check in ay lalabas dito.',
+      infoProtected: '🔒 Ang iyong impormasyon ay protektado',
+      versionInfo: 'Bersyon 2.0 | © 2026 Medical Staffing Resources',
+      statusOnSite: 'Nasa site',
+      statusLeft: 'Umalis',
+      checkOut: 'Check Out',
+      delete: 'Burahin',
+      checkOutConfirm: 'I-check out si "{name}"?',
+      checkOutSuccess: 'Si {name} ay na-check out na.',
+      deleteConfirm: 'Burahin ang entry para kay "{name}"? Hindi na ito mababawi.',
+      deleteSuccess: 'Na-delete ang entry.',
+      deleteEmployeeConfirm: 'Burahin ang entry para kay "{name}"? Hindi na ito mababawi.',
+      deleteEmployeeSuccess: 'Na-delete ang employee entry.',
+      overrideError: 'Pakipunan lahat ng override fields.',
+      overrideSuccess: 'Manuwal na naidagdag si "{name}"',
+      overrideFail: 'Hindi naidagdag ang bisita. Pakisubukan muli.',
+      checkOutFail: 'Hindi na-check out. Pakisubukan muli.',
+      deleteFail: 'Hindi na-delete. Pakisubukan muli.',
+      deleteEmployeeFail: 'Hindi na-delete. Pakisubukan muli.',
+      loadVisitorsFail: 'Hindi na-load ang mga bisita. Suriin ang API URL.',
+      loadDashboardFail: 'Hindi na-load ang dashboard. Suriin ang API URL.',
+      loadEmployeesFail: 'Hindi na-load ang mga empleyado. Suriin ang API URL.',
+      noEntriesToday: 'Walang entries ngayon',
+      noDataYet: 'Wala pang data',
+      justNow: 'Ngayon lang',
+      minAgo: '{n} min ang nakalipas',
+      hAgo: '{n}o ang nakalipas',
+      dAgo: '{n}a ang nakalipas',
+       languageLabel: '🌐 Tagalog',
+       devCredit: 'Developed and Maintained by: Ritche Gerona'
+    }
+  };
+
+  function t(key) {
+    var dict = translations[currentLang] || translations.en;
+    return dict[key] || key;
+  }
+
+  // ─── Language Switching ───────────────────
+  function setLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem(LANG_KEY, lang);
+    var dict = translations[lang] || translations.en;
+
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var key = el.getAttribute('data-i18n');
+      if (dict[key]) el.textContent = dict[key];
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
+      var key = el.getAttribute('data-i18n-placeholder');
+      if (dict[key]) el.setAttribute('placeholder', dict[key]);
+    });
+
+    var adminLangLabel = document.getElementById('adminLangLabel');
+    if (adminLangLabel) adminLangLabel.textContent = dict.languageLabel;
+
+    // Re-render tables with translated status badges
+    if (currentView === 'visitors') {
+      renderVisitorsTable();
+    } else {
+      renderEmployeesTable();
+    }
+  }
+
+  function toggleLanguage() {
+    setLanguage(currentLang === 'en' ? 'tl' : 'en');
+  }
 
   // ─── DOM References ────────────────────
-  const authOverlay = document.getElementById('authOverlay');
-  const pinInput = document.getElementById('pinInput');
-  const authError = document.getElementById('authError');
-  const authBtn = document.getElementById('authBtn');
-  const logoutBtn = document.getElementById('logoutBtn');
-  const backBtn = document.getElementById('backBtn');
-  const adminMain = document.getElementById('adminMain');
-  const totalTodayEl = document.getElementById('totalToday');
-  const onSiteEl = document.getElementById('onSite');
-  const recentEntryEl = document.getElementById('recentEntry');
-  const searchInput = document.getElementById('searchInput');
-  const filterTabs = document.querySelectorAll('[data-filter]');
-  const viewTabs = document.querySelectorAll('[data-view]');
-  const tableBody = document.querySelector('#visitorsTable tbody');
-  const employeesTableBody = document.querySelector('#employeesTable tbody');
-  const emptyState = document.getElementById('emptyState');
-  const emptyStateEmployees = document.getElementById('emptyStateEmployees');
-  const overrideForm = document.getElementById('overrideForm');
-  const overrideToggle = document.querySelector('.override-header');
-  const overrideBody = document.querySelector('.override-body');
-  const overrideToggleIcon = document.querySelector('.override-toggle');
-  const toast = document.getElementById('toast');
+  var authOverlay = document.getElementById('authOverlay');
+  var pinInput = document.getElementById('pinInput');
+  var authError = document.getElementById('authError');
+  var authBtn = document.getElementById('authBtn');
+  var logoutBtn = document.getElementById('logoutBtn');
+  var backBtn = document.getElementById('backBtn');
+  var adminMain = document.getElementById('adminMain');
+  var totalTodayEl = document.getElementById('totalToday');
+  var onSiteEl = document.getElementById('onSite');
+  var recentEntryEl = document.getElementById('recentEntry');
+  var searchInput = document.getElementById('searchInput');
+  var filterTabs = document.querySelectorAll('[data-filter]');
+  var viewTabs = document.querySelectorAll('[data-view]');
+  var tableBody = document.querySelector('#visitorsTable tbody');
+  var employeesTableBody = document.querySelector('#employeesTable tbody');
+  var emptyState = document.getElementById('emptyState');
+  var emptyStateEmployees = document.getElementById('emptyStateEmployees');
+  var overrideForm = document.getElementById('overrideForm');
+  var overrideToggle = document.querySelector('.override-header');
+  var overrideBody = document.querySelector('.override-body');
+  var overrideToggleIcon = document.querySelector('.override-toggle');
+  var toast = document.getElementById('toast');
+  var adminLangSelector = document.getElementById('adminLangSelector');
 
-  let currentFilter = 'all';
-  let currentView = 'visitors';
-  let visitorsCache = [];
-  let employeesCache = [];
+  var currentFilter = 'all';
+  var currentView = 'visitors';
+  var visitorsCache = [];
+  var employeesCache = [];
+
+  // Language toggle handler
+  if (adminLangSelector) {
+    adminLangSelector.addEventListener('click', toggleLanguage);
+  }
 
   // ─── Auth Check ─────────────────────────
   function isAuthenticated() {
@@ -60,7 +280,7 @@
 
   // ─── Authentication ─────────────────────
   function handleAuth() {
-    const pin = pinInput.value.trim();
+    var pin = pinInput.value.trim();
     if (pin === ADMIN_PASSWORD) {
       sessionStorage.setItem(AUTH_KEY, 'true');
       authOverlay.style.display = 'none';
@@ -73,7 +293,7 @@
       pinInput.classList.add('error');
       pinInput.value = '';
       pinInput.focus();
-      setTimeout(() => {
+      setTimeout(function () {
         authError.classList.remove('visible');
         pinInput.classList.remove('error');
       }, 2500);
@@ -100,132 +320,102 @@
 
   // ─── Toast Notification ─────────────────
   function showToast(message, type) {
-    const icon = type === 'error' ? '❌' : '✅';
-    toast.innerHTML = `${icon} ${message}`;
-    toast.className = `toast ${type || ''}`;
+    var icon = type === 'error' ? '❌' : '✅';
+    toast.innerHTML = icon + ' ' + message;
+    toast.className = 'toast ' + (type || '');
     void toast.offsetWidth;
     toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3500);
+    setTimeout(function () { toast.classList.remove('show'); }, 3500);
   }
 
   // ─── API Helpers ──────────────────────────
-
-  // Fetch visitors from the API
   async function fetchVisitors(search, filter) {
-    const params = new URLSearchParams();
+    var params = new URLSearchParams();
     if (search) params.set('search', search);
     if (filter && filter !== 'all') params.set('filter', filter);
-
-    const queryString = params.toString();
-    const url = queryString ? `${API_URL}?${queryString}` : API_URL;
-
-    const response = await fetch(url, { method: 'GET', mode: 'cors' });
-    const result = await response.json();
-
-    if (result.status === 'error') {
-      throw new Error(result.message || 'API error');
-    }
-
+    var queryString = params.toString();
+    var url = queryString ? API_URL + '?' + queryString : API_URL;
+    var response = await fetch(url, { method: 'GET', mode: 'cors' });
+    var result = await response.json();
+    if (result.status === 'error') throw new Error(result.message || 'API error');
     return result.data || [];
   }
 
-  // Fetch employees from the API
   async function fetchEmployees(search) {
-    const params = new URLSearchParams();
+    var params = new URLSearchParams();
     if (search) params.set('search', search);
-
-    const url = `${API_URL}?action=employees&${params.toString()}`;
-
-    const response = await fetch(url, { method: 'GET', mode: 'cors' });
-    const result = await response.json();
-
-    if (result.status === 'error') {
-      throw new Error(result.message || 'API error');
-    }
-
+    var url = API_URL + '?action=employees&' + params.toString();
+    var response = await fetch(url, { method: 'GET', mode: 'cors' });
+    var result = await response.json();
+    if (result.status === 'error') throw new Error(result.message || 'API error');
     return result.data || [];
   }
 
-  // Send a write command to the API
   async function sendAction(payload) {
-    await fetch(API_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
+    await fetch(API_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
   }
 
   // ─── Helpers ────────────────────────────
   function formatTime(isoString) {
     if (!isoString) return '';
-    const date = new Date(isoString);
-    return date.toLocaleTimeString('en-PH', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
-    });
+    var date = new Date(isoString);
+    return date.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit', hour12: true });
   }
 
   function formatDate(isoString) {
     if (!isoString) return '';
-    const date = new Date(isoString);
-    return date.toLocaleDateString('en-PH', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    });
+    var date = new Date(isoString);
+    return date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' });
   }
 
   function isToday(isoString) {
-    const date = new Date(isoString);
-    const now = new Date();
+    var date = new Date(isoString);
+    var now = new Date();
     return date.toDateString() === now.toDateString();
   }
 
   function timeAgo(isoString) {
-    const now = new Date();
-    const date = new Date(isoString);
-    const diffMs = now - date;
-    const diffMins = Math.floor(diffMs / 60000);
-
-    if (diffMins < 1) return 'Just now';
-    if (diffMins < 60) return `${diffMins} min ago`;
-    const diffHours = Math.floor(diffMins / 60);
-    if (diffHours < 24) return `${diffHours}h ago`;
-    const diffDays = Math.floor(diffHours / 24);
-    return `${diffDays}d ago`;
+    var now = new Date();
+    var date = new Date(isoString);
+    var diffMs = now - date;
+    var diffMins = Math.floor(diffMs / 60000);
+    if (diffMins < 1) return t('justNow');
+    if (diffMins < 60) return t('minAgo').replace('{n}', diffMins);
+    var diffHours = Math.floor(diffMins / 60);
+    if (diffHours < 24) return t('hAgo').replace('{n}', diffHours);
+    var diffDays = Math.floor(diffHours / 24);
+    return t('dAgo').replace('{n}', diffDays);
   }
 
   // ─── Escape HTML ─────────────────────────
   function escapeHtml(text) {
-    const div = document.createElement('div');
+    var div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
   }
 
   // ─── Render Stats ───────────────────────
   function renderStats(visitors) {
-    const totalToday = visitors.filter(v => isToday(v.timestamp)).length;
-    const onSite = visitors.filter(v => v.status === 'checked-in').length;
-    const recent = visitors.length > 0 ? visitors[0] : null;
+    var totalToday = visitors.filter(function (v) { return isToday(v.timestamp); }).length;
+    var onSite = visitors.filter(function (v) { return v.status === 'checked-in'; }).length;
+    var recent = visitors.length > 0 ? visitors[0] : null;
 
     totalTodayEl.textContent = totalToday;
     onSiteEl.textContent = onSite;
 
     if (recent && isToday(recent.timestamp)) {
-      recentEntryEl.textContent = `${recent.fullName.split(' ')[0]} · ${timeAgo(recent.timestamp)}`;
+      recentEntryEl.textContent = recent.fullName.split(' ')[0] + ' · ' + timeAgo(recent.timestamp);
     } else if (visitors.length > 0) {
-      recentEntryEl.textContent = 'No entries today';
+      recentEntryEl.textContent = t('noEntriesToday');
     } else {
-      recentEntryEl.textContent = 'No data yet';
+      recentEntryEl.textContent = t('noDataYet');
     }
   }
 
   // ─── Render Visitors Table ─────────────
   function renderVisitorsTable() {
-    const tableEl = document.querySelector('#visitorsTable tbody');
-    const emptyEl = document.getElementById('emptyState');
+    var tableEl = document.querySelector('#visitorsTable tbody');
+    var emptyEl = document.getElementById('emptyState');
 
     if (visitorsCache.length === 0) {
       tableEl.innerHTML = '';
@@ -235,38 +425,27 @@
 
     emptyEl.style.display = 'none';
 
-    tableEl.innerHTML = visitorsCache.map(v => `
-      <tr>
-        <td><span class="visitor-id">${escapeHtml(v.idNumber || '—')}</span></td>
-        <td><strong>${escapeHtml(v.fullName)}</strong></td>
-        <td>${escapeHtml(v.contactNumber)}</td>
-        <td>${escapeHtml(v.contactPerson)}</td>
-        <td>${escapeHtml(v.purpose)}</td>
-        <td>
-          <span class="badge badge--${v.status === 'checked-in' ? 'checked-in' : 'checked-out'}">
-            ${v.status === 'checked-in' ? 'On-site' : 'Left'}
-          </span>
-        </td>
-        <td>${formatTime(v.timestamp)}</td>
-        <td>
-          ${v.status === 'checked-in'
-            ? `<button class="action-btn action-btn--checkout" data-id="${escapeHtml(v.id)}">Check Out</button>`
-            : `<button class="action-btn action-btn--delete" data-id="${escapeHtml(v.id)}">Delete</button>`
-          }
-        </td>
-      </tr>
-    `).join('');
+    tableEl.innerHTML = visitorsCache.map(function (v) {
+      return '<tr>' +
+        '<td><span class="visitor-id">' + escapeHtml(v.idNumber || '—') + '</span></td>' +
+        '<td><strong>' + escapeHtml(v.fullName) + '</strong></td>' +
+        '<td>' + escapeHtml(v.contactNumber) + '</td>' +
+        '<td>' + escapeHtml(v.contactPerson) + '</td>' +
+        '<td>' + escapeHtml(v.purpose) + '</td>' +
+        '<td><span class="badge badge--' + (v.status === 'checked-in' ? 'checked-in' : 'checked-out') + '">' + (v.status === 'checked-in' ? t('statusOnSite') : t('statusLeft')) + '</span></td>' +
+        '<td>' + formatTime(v.timestamp) + '</td>' +
+        '<td>' + (v.status === 'checked-in'
+          ? '<button class="action-btn action-btn--checkout" data-id="' + escapeHtml(v.id) + '">' + t('checkOut') + '</button>'
+          : '<button class="action-btn action-btn--delete" data-id="' + escapeHtml(v.id) + '">' + t('delete') + '</button>') + '</td>' +
+        '</tr>';
+    }).join('');
 
-    tableEl.querySelectorAll('.action-btn--checkout').forEach(btn => {
-      btn.addEventListener('click', function () {
-        checkoutVisitor(this.dataset.id);
-      });
+    tableEl.querySelectorAll('.action-btn--checkout').forEach(function (btn) {
+      btn.addEventListener('click', function () { checkoutVisitor(this.dataset.id); });
     });
 
-    tableEl.querySelectorAll('.action-btn--delete').forEach(btn => {
-      btn.addEventListener('click', function () {
-        deleteVisitor(this.dataset.id);
-      });
+    tableEl.querySelectorAll('.action-btn--delete').forEach(function (btn) {
+      btn.addEventListener('click', function () { deleteVisitor(this.dataset.id); });
     });
   }
 
@@ -280,75 +459,67 @@
 
     emptyStateEmployees.style.display = 'none';
 
-    employeesTableBody.innerHTML = employeesCache.map(e => `
-      <tr>
-        <td><span class="visitor-id">${escapeHtml(e.employeeId || '—')}</span></td>
-        <td><strong>${escapeHtml(e.fullName)}</strong></td>
-        <td>${escapeHtml(e.department)}</td>
-        <td><span class="badge badge--employee">${escapeHtml(e.type || 'Employee')}</span></td>
-        <td>
-          <span class="badge badge--${e.status === 'Time-in' ? 'checked-in' : 'checked-out'}">
-            ${e.status === 'Time-in' ? 'On-site' : 'Left'}
-          </span>
-        </td>
-        <td>${formatTime(e.timestamp)}</td>
-        <td>
-          <button class="action-btn action-btn--delete-employee" data-id="${escapeHtml(e.id)}">Delete</button>
-        </td>
-      </tr>
-    `).join('');
+    employeesTableBody.innerHTML = employeesCache.map(function (e) {
+      return '<tr>' +
+        '<td><span class="visitor-id">' + escapeHtml(e.employeeId || '—') + '</span></td>' +
+        '<td><strong>' + escapeHtml(e.fullName) + '</strong></td>' +
+        '<td>' + escapeHtml(e.department) + '</td>' +
+        '<td><span class="badge badge--employee">' + escapeHtml(e.type || 'Employee') + '</span></td>' +
+        '<td><span class="badge badge--' + (e.status === 'Time-in' ? 'checked-in' : 'checked-out') + '">' + (e.status === 'Time-in' ? t('statusOnSite') : t('statusLeft')) + '</span></td>' +
+        '<td>' + formatTime(e.timestamp) + '</td>' +
+        '<td><button class="action-btn action-btn--delete-employee" data-id="' + escapeHtml(e.id) + '">' + t('delete') + '</button></td>' +
+        '</tr>';
+    }).join('');
 
-    employeesTableBody.querySelectorAll('.action-btn--delete-employee').forEach(btn => {
-      btn.addEventListener('click', function () {
-        deleteEmployee(this.dataset.id);
-      });
+    employeesTableBody.querySelectorAll('.action-btn--delete-employee').forEach(function (btn) {
+      btn.addEventListener('click', function () { deleteEmployee(this.dataset.id); });
     });
   }
 
   // ─── Check Out Visitor ──────────────────
   async function checkoutVisitor(id) {
-    const visitor = visitorsCache.find(v => v.id === id);
+    var visitor = visitorsCache.find(function (v) { return v.id === id; });
     if (!visitor) return;
 
-    if (confirm(`Check out "${visitor.fullName}"?`)) {
+    if (confirm(t('checkOutConfirm').replace('{name}', visitor.fullName))) {
       try {
-        await sendAction({ action: 'checkout', id });
-        showToast(`${visitor.fullName.split(' ')[0]} has been checked out.`, 'success');
+        await sendAction({ action: 'checkout', id: id });
+        showToast(t('checkOutSuccess').replace('{name}', visitor.fullName.split(' ')[0]), 'success');
         if (currentView === 'visitors') await renderDashboard();
       } catch (err) {
-        showToast('Failed to check out. Please try again.', 'error');
+        showToast(t('checkOutFail'), 'error');
       }
     }
   }
 
   // ─── Delete Visitor ─────────────────────
   async function deleteVisitor(id) {
-    const visitor = visitorsCache.find(v => v.id === id);
+    var visitor = visitorsCache.find(function (v) { return v.id === id; });
     if (!visitor) return;
 
-    if (confirm(`Delete entry for "${visitor.fullName}"? This cannot be undone.`)) {
+    if (confirm(t('deleteConfirm').replace('{name}', visitor.fullName))) {
       try {
-        await sendAction({ action: 'delete', id });
-        showToast(`Entry deleted.`, 'success');
+        await sendAction({ action: 'delete', id: id });
+        showToast(t('deleteSuccess'), 'success');
         if (currentView === 'visitors') await renderDashboard();
       } catch (err) {
-        showToast('Failed to delete. Please try again.', 'error');
+        showToast(t('deleteFail'), 'error');
       }
     }
   }
 
   // ─── Delete Employee ────────────────────
   async function deleteEmployee(id) {
-    const employee = employeesCache.find(e => e.id === id);
+    var employee = employeesCache.find(function (e) { return e.id === id; });
     if (!employee) return;
 
-    if (confirm(`Delete entry for "${employee.fullName}"? This cannot be undone.`)) {
+    if (confirm(t('deleteEmployeeConfirm').replace('{name}', employee.fullName))) {
       try {
-        await sendAction({ action: 'empDelete', id });
-        showToast(`Employee entry deleted.`, 'success');
+        await sendAction({ action: 'empDelete', id: id });
+        showToast(t('deleteEmployeeSuccess'), 'success');
         await renderDashboard();
       } catch (err) {
-        showToast('Failed to delete. Please try again.', 'error');
+        showToast(t('deleteEmployeeFail'), 'error');
       }
     }
   }
@@ -362,46 +533,39 @@
   overrideForm.addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    const name = document.getElementById('overrideName').value.trim();
-    const contact = document.getElementById('overrideContact').value.trim();
-    const person = document.getElementById('overridePerson').value;
-    const purposeVal = document.getElementById('overridePurpose').value;
+    var name = document.getElementById('overrideName').value.trim();
+    var contact = document.getElementById('overrideContact').value.trim();
+    var person = document.getElementById('overridePerson').value;
+    var purposeVal = document.getElementById('overridePurpose').value;
 
     if (!name || !contact || !person || !purposeVal) {
-      showToast('Please fill in all override fields.', 'error');
+      showToast(t('overrideError'), 'error');
       return;
     }
 
     try {
-      await sendAction({
-        action: 'checkin',
-        fullName: name,
-        contactNumber: contact,
-        contactPerson: person,
-        purpose: purposeVal
-      });
-
-      showToast(`Manually added "${name}"`, 'success');
+      await sendAction({ action: 'checkin', fullName: name, contactNumber: contact, contactPerson: person, purpose: purposeVal });
+      showToast(t('overrideSuccess').replace('{name}', name), 'success');
       overrideForm.reset();
       if (currentView === 'visitors') await renderDashboard();
     } catch (err) {
-      showToast('Failed to add visitor. Please try again.', 'error');
+      showToast(t('overrideFail'), 'error');
     }
   });
 
   // ─── Search Input (debounced) ────────────
-  let searchTimeout;
+  var searchTimeout;
   searchInput.addEventListener('input', function () {
     clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(async () => {
+    searchTimeout = setTimeout(async function () {
       await fetchAndRender();
     }, 300);
   });
 
   // ─── Filter Tabs ─────────────────────────
-  filterTabs.forEach(tab => {
+  filterTabs.forEach(function (tab) {
     tab.addEventListener('click', async function () {
-      filterTabs.forEach(t => t.classList.remove('active'));
+      filterTabs.forEach(function (t2) { t2.classList.remove('active'); });
       this.classList.add('active');
       currentFilter = this.dataset.filter;
       if (currentView === 'visitors') await fetchAndRender();
@@ -409,18 +573,16 @@
   });
 
   // ─── View Toggle ─────────────────────────
-  viewTabs.forEach(tab => {
+  viewTabs.forEach(function (tab) {
     tab.addEventListener('click', async function () {
-      viewTabs.forEach(t => t.classList.remove('active'));
+      viewTabs.forEach(function (t2) { t2.classList.remove('active'); });
       this.classList.add('active');
       currentView = this.dataset.view;
 
-      // Toggle sections
       document.getElementById('visitorsSection').style.display = currentView === 'visitors' ? 'block' : 'none';
       document.getElementById('employeesSection').style.display = currentView === 'employees' ? 'block' : 'none';
 
-      // Toggle search/filter elements
-      const searchFilterSection = document.getElementById('searchFilterSection');
+      var searchFilterSection = document.getElementById('searchFilterSection');
       if (searchFilterSection) {
         searchFilterSection.style.display = currentView === 'visitors' ? 'block' : 'none';
       }
@@ -436,54 +598,53 @@
   // ─── Fetch data and render visitors ──
   async function fetchAndRender() {
     try {
-      const query = searchInput.value.trim();
+      var query = searchInput.value.trim();
       visitorsCache = await fetchVisitors(query, currentFilter);
       renderVisitorsTable();
     } catch (err) {
       console.error('Failed to fetch visitors:', err);
-      showToast('Failed to load visitors. Check your API URL.', 'error');
+      showToast(t('loadVisitorsFail'), 'error');
     }
   }
 
   // ─── Render Visitors Dashboard ──────────
   async function renderVisitorsDashboard() {
     try {
-      const query = searchInput.value.trim();
+      var query = searchInput.value.trim();
       visitorsCache = await fetchVisitors(query, currentFilter);
       renderStats(visitorsCache);
       renderVisitorsTable();
     } catch (err) {
       console.error('Dashboard load error:', err);
-      showToast('Failed to load dashboard. Check your API URL.', 'error');
+      showToast(t('loadDashboardFail'), 'error');
     }
   }
 
   // ─── Render Employees Dashboard ───────
   async function renderEmployeesDashboard() {
     try {
-      const query = searchInput.value.trim();
+      var query = searchInput.value.trim();
       employeesCache = await fetchEmployees(query);
-      
-      // Update stats for employees
-      const totalToday = employeesCache.filter(e => isToday(e.timestamp)).length;
-      const onSite = employeesCache.filter(e => e.status === 'Time-in').length;
-      const recent = employeesCache.length > 0 ? employeesCache[0] : null;
+
+      var totalToday = employeesCache.filter(function (e) { return isToday(e.timestamp); }).length;
+      var onSite = employeesCache.filter(function (e) { return e.status === 'Time-in'; }).length;
+      var recent = employeesCache.length > 0 ? employeesCache[0] : null;
 
       totalTodayEl.textContent = totalToday;
       onSiteEl.textContent = onSite;
 
       if (recent && isToday(recent.timestamp)) {
-        recentEntryEl.textContent = `${recent.fullName.split(' ')[0]} · ${timeAgo(recent.timestamp)}`;
+        recentEntryEl.textContent = recent.fullName.split(' ')[0] + ' · ' + timeAgo(recent.timestamp);
       } else if (employeesCache.length > 0) {
-        recentEntryEl.textContent = 'No entries today';
+        recentEntryEl.textContent = t('noEntriesToday');
       } else {
-        recentEntryEl.textContent = 'No data yet';
+        recentEntryEl.textContent = t('noDataYet');
       }
 
       renderEmployeesTable();
     } catch (err) {
       console.error('Employees dashboard load error:', err);
-      showToast('Failed to load employees. Check your API URL.', 'error');
+      showToast(t('loadEmployeesFail'), 'error');
     }
   }
 
@@ -497,6 +658,8 @@
   }
 
   // ─── Initial Load ───────────────────────
+  setLanguage(currentLang);
+
   if (!requireAuth()) {
     pinInput.focus();
   } else {
@@ -505,12 +668,11 @@
 
   // Re-check auth if coming from another tab
   document.addEventListener('visibilitychange', function () {
-    if (!document.hidden) {
-      requireAuth();
-    }
+    if (!document.hidden) requireAuth();
   });
 
-  console.log('%c🔐 Admin Dashboard v1.0 (API)', 'font-size: 18px; font-weight: bold; color: #1a73e8;');
-  console.log('%c🔧 API:', 'font-size: 12px; color: #5a6a7e;', API_URL);
+  console.log('%c🔐 Admin Dashboard v2.0 (API)', 'font-size: 18px; font-weight: bold; color: #00838f;');
+  console.log('%c🔧 API:', 'font-size: 12px; color: #546e7a;', API_URL);
+  console.log('%c🌐 Language:', 'font-size: 12px; color: #546e7a;', currentLang);
 
 })();
