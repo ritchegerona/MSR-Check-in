@@ -72,7 +72,8 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.70) 0%, rgba(224, 242, 245, 0.70) 100%);
+  /* Adjusted transparency to 20% (alpha 0.2) for a lighter overlay */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(224, 242, 245, 0.2) 100%);
   z-index: -1;
   pointer-events: none;
 }
