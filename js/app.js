@@ -40,7 +40,7 @@
   // ─── Translations ─────────────────────────
   const translations = {
     en: {
-      systemTitle: 'Visitor Check-in System',
+      systemTitle: 'Check-in System',
       welcomeTitle: 'Welcome to MSR',
       welcomeSub: 'Please select your access type',
       visitorLabel: 'Visitor',
@@ -103,7 +103,7 @@
       languageLabel: '🌐 English'
     },
     tl: {
-      systemTitle: 'Sistema ng Check-in ng mga Bisita',
+      systemTitle: 'Sistema ng Check-in',
       welcomeTitle: 'Maligayang Pagdating sa MSR',
       welcomeSub: 'Pakipili ang iyong uri ng access',
       visitorLabel: 'Bumisita',
